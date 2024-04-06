@@ -7,6 +7,8 @@ async function getWeather(id) {
   const BASE_URL = `https://api.weatherapi.com/v1/current.json`;
   let query = `?key=${API_KEY}&q=id:${id}`;
   let response = await fetch(`${BASE_URL}${query}`);
+  if (!response.ok) {
+  }
   let data = await response.json();
   return data.current;
 }
@@ -16,6 +18,8 @@ async function getCity(city) {
   let query = `?key=${API_KEY}&q=${city}`;
 
   let response = await fetch(`${BASE_URL}${query}`);
+  if (!response.ok) {
+  }
   let data = await response.json();
   return data[0];
 }
