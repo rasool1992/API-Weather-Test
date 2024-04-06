@@ -8,6 +8,7 @@ async function getWeather(id) {
   let query = `?key=${API_KEY}&q=id:${id}`;
   let response = await fetch(`${BASE_URL}${query}`);
   if (!response.ok) {
+    console.log("Enter A valid city name ");
   }
   let data = await response.json();
   return data.current;
