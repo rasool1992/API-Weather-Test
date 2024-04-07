@@ -2,14 +2,10 @@ const cityForm = document.querySelector(".location");
 const card = document.querySelector(".card");
 
 const API_KEY = "953677dccfcd4b14b3a185020240604";
-
 async function getWeather(id) {
   const BASE_URL = `https://api.weatherapi.com/v1/current.json`;
   let query = `?key=${API_KEY}&q=id:${id}`;
   let response = await fetch(`${BASE_URL}${query}`);
-  if (!response.ok) {
-    console.log("Enter A valid city name ");
-  }
   let data = await response.json();
   return data.current;
 }
@@ -19,16 +15,10 @@ async function getCity(city) {
   let query = `?key=${API_KEY}&q=${city}`;
 
   let response = await fetch(`${BASE_URL}${query}`);
-  if (!response.ok) {
-  }
+
   let data = await response.json();
   return data[0];
 }
-getCity("baghdad")
-  .then(function (data) {
-    return getWeather(data.id);
-  })
-  .catch(function (err) {});
 
 async function updateUI(data) {
   let { cityDetails, cityWeather } = data;
@@ -54,9 +44,13 @@ async function getData(city) {
 cityForm.addEventListener("input", function (e) {
   e.preventDefault();
   let city = e.target.value;
-  getData(city)
-    .then(function (data) {
-      updateUI(data);
-    })
-    .catch(function (err) {});
+  if (city.length > 0) {
+    getData(city)
+      .then(function (data) {
+        updateUI(data);
+      })
+      .catch(function (err) {});
+  } else {
+    card.classList.add("d-none");
+  }
 });
