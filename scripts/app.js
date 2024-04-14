@@ -1,7 +1,7 @@
 const cityForm = document.querySelector(".location");
 const card = document.querySelector(".card");
-
 const API_KEY = "953677dccfcd4b14b3a185020240604";
+const API_Location = "a4afd0a4a7b94fce8597fa434f098d76";
 async function getWeather(id) {
   const BASE_URL = `https://api.weatherapi.com/v1/current.json`;
   let query = `?key=${API_KEY}&q=id:${id}`;
@@ -53,4 +53,25 @@ cityForm.addEventListener("input", function (e) {
   } else {
     card.classList.add("d-none");
   }
+});
+
+async function getLocation() {
+  const BASE_URL = `https://api.ipgeolocation.io/ipgeo`;
+  let query = `?apiKey=${API_Location}`;
+  let response = await fetch(BASE_URL + query);
+  let data = await response.json();
+  return data;
+}
+
+window.addEventListener("load", function (e) {
+  getLocation().then(function (data) {
+    let cityFromGEO = data.city;
+
+    getData(cityFromGEO)
+      .then(function (data) {
+        let { cityWeather, cityDetails } = data;
+        updateUI(data);
+      })
+      .catch(function (err) {});
+  });
 });
